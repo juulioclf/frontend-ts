@@ -1,34 +1,19 @@
-import { Fragment, useContext, useEffect } from 'react'
-import Head from 'next/head'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-// import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { parseCookies } from 'nookies'
-import { AuthContext } from '../contexts/AuthContext'
-import { api } from '../services/api'
-import { GetServerSideProps } from 'next'
-import { getAPIClient } from '../services/axios'
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 
-const navigation = ['Dashboard', 'Team', 'Projects', 'Calendar', 'Reports']
-const profile = ['Your Profile', 'Settings']
+export default function NavBar() {
 
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ')
-}
+    
+    const navigation = [{name: 'Home', link_to: 'home'}, {name: 'Exercicios', link_to: 'exercise'}, {name: 'Protocolos', link_to: 'workouts'}]
+    const profile = ['Your Profile', 'Settings']
 
-export default function Dashboard() {
-  const { user } = useContext(AuthContext)
+    function classNames(...classes: any) {
+        return classes.filter(Boolean).join(' ')
+      }
+      
 
-  useEffect(() => {
-    // api.get('/users');
-  }, [])
-
-  return (
-    <div>
-      <Head>
-        <title>Dashboard</title>
-      </Head>
-
-      <Disclosure as="nav" className="bg-gray-800">
+    return(
+        <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,19 +30,19 @@ export default function Dashboard() {
                     <div className="ml-10 flex items-baseline space-x-4">
                       {navigation.map((item, itemIdx) =>
                         itemIdx === 0 ? (
-                          <Fragment key={item}>
+                          <Fragment key={itemIdx}>
                             {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                            <a href="#" className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
-                              {item}
+                            <a href={item.link_to} className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
+                              {item.name}
                             </a>
                           </Fragment>
                         ) : (
                           <a
-                            key={item}
-                            href="#"
+                            key={item.name}
+                            href={item.link_to}
                             className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                           >
-                            {item}
+                            {item.name}
                           </a>
                         )
                       )}
@@ -130,15 +115,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="-mr-2 flex md:hidden">
-                  {/* Mobile menu button */}
-                  {/* <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                    <span className="sr-only">Open main menu</span>
-                    {open ? (
-                      <XIcon className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                    )}
-                  </Disclosure.Button> */}
+
                 </div>
               </div>
             </div>
@@ -147,19 +124,19 @@ export default function Dashboard() {
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 {navigation.map((item, itemIdx) =>
                   itemIdx === 0 ? (
-                    <Fragment key={item}>
+                    <Fragment key={itemIdx}>
                       {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                      <a href="#" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
-                        {item}
+                      <a href={item.link_to}className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
+                        {item.name}
                       </a>
                     </Fragment>
                   ) : (
                     <a
-                      key={item}
-                      href="#"
+                      key={item.name}
+                      href={item.link_to}
                       className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                     >
-                      {item}
+                      {item.name}
                     </a>
                   )
                 )}
@@ -204,41 +181,5 @@ export default function Dashboard() {
           </>
         )}
       </Disclosure>
-
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        </div>
-      </header>
-      <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          {/* Replace with your content */}
-          <div className="px-4 py-6 sm:px-0">
-            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-          </div>
-          {/* /End replace */}
-        </div>
-      </main>
-    </div>
-  )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getAPIClient(ctx);
-  const { ['nextauth.token']: token } = parseCookies(ctx)
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      }
-    }
-  }
-
-//   await apiClient.get('/users')
-
-  return {
-    props: {}
-  }
+    )
 }
