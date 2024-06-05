@@ -15,6 +15,6 @@ export async function signInRequest(data: SignInRequestData) {
 
     return {
         token: response.data.access_token,
-        user: response.data.user
+        user: response.data.name
     }
 }
