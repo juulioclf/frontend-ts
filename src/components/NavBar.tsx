@@ -4,7 +4,7 @@ import { Fragment } from "react";
 export default function NavBar() {
 
     
-    const navigation = [{name: 'Home', link_to: 'home'}, {name: 'Exercicios', link_to: 'exercise'}, {name: 'Protocolos', link_to: 'workouts'}]
+    const navigation = [{name: 'Home', link_to: 'home'}, {name: 'Exercicios', link_to: 'exercise'}, {name: 'Protocolos', link_to: 'workout'}]
     const profile = ['Your Profile', 'Settings']
 
     function classNames(...classes: any) {
