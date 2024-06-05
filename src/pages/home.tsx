@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect } from 'react'
+import { Fragment, ReactElement, useContext, useEffect } from 'react'
 import Head from 'next/head'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 // import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
@@ -8,6 +8,7 @@ import { api } from '../services/api'
 import { GetServerSideProps } from 'next'
 import { getAPIClient } from '../services/axios'
 import NavBar from '@/components/NavBar'
+import PrivateLayout from '@/components/layouts/PrivateLayout'
 
 const navigation = [{name: 'Home', link_to: 'home'}, {name: 'Exercicios', link_to: 'exercise'}, {name: 'Protocolos', link_to: 'workouts'}]
 const profile = ['Your Profile', 'Settings']
@@ -16,7 +17,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Dashboard() {
+const HomePage = () => {
   const { user } = useContext(AuthContext)
 
   useEffect(() => {
@@ -28,8 +29,6 @@ export default function Dashboard() {
       <Head>
         <title>Home</title>
       </Head>
-
-      <NavBar/>
 
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -48,6 +47,16 @@ export default function Dashboard() {
     </div>
   )
 }
+
+HomePage.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <PrivateLayout>
+      {page}
+    </PrivateLayout>
+  )
+}
+
+export default HomePage;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const apiClient = getAPIClient(ctx);

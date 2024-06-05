@@ -1,16 +1,25 @@
 import { AuthContext } from '@/contexts/AuthContext'
 import Head from 'next/head'
-import { useContext } from 'react'
+import { useRouter } from 'next/router'
+import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 // import { LockClosedIcon } from '@heroicons/react/solid'
 
 export default function Home() {
   const { register, handleSubmit } = useForm()
-  const { signIn } = useContext(AuthContext)
+  const { signIn, isAuthenticated, user } = useContext(AuthContext)
+
+  const router = useRouter();
 
   function handleSignIn(data: any) {
     signIn(data)
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/home');
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
